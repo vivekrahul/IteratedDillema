@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Code, Swords, Trophy, Info, Plus } from 'lucide-react';
-import { Analytics } from '@vercel/analytics/react';
 import { Strategy } from './types';
 import { DEFAULT_STRATEGIES } from './constants';
 import StrategyEditor from './components/StrategyEditor';
@@ -146,7 +145,6 @@ function App() {
         </div>
       </main>
 
-      <Analytics />
     </div>
   );
 }
