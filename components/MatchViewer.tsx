@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Strategy, MatchResult } from '../types';
 import { runMatch } from '../services/engine';
-import { Play, RotateCcw, FastForward } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface MatchViewerProps {
@@ -13,7 +13,6 @@ const MatchViewer: React.FC<MatchViewerProps> = ({ strategies }) => {
   const [strategyBId, setStrategyBId] = useState<string>(strategies[1]?.id || strategies[0]?.id || '');
   const [rounds, setRounds] = useState(50);
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
-  const [playbackRound, setPlaybackRound] = useState<number | null>(null);
 
   useEffect(() => {
     // Reset selection if strategies change/delete
@@ -31,7 +30,6 @@ const MatchViewer: React.FC<MatchViewerProps> = ({ strategies }) => {
     if (sA && sB) {
       const result = runMatch(sA, sB, rounds);
       setMatchResult(result);
-      setPlaybackRound(null); // Show full result immediately
     }
   };
 

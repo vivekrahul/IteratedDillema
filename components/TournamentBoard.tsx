@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Strategy, TournamentResult } from '../types';
 import { runTournament } from '../services/engine';
-import { Trophy, PlayCircle, BarChart2 } from 'lucide-react';
+import { Trophy, BarChart2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface TournamentBoardProps {

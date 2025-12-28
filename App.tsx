@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Code, Swords, Trophy, Info, Plus } from 'lucide-react';
 import { Strategy } from './types';
 import { DEFAULT_STRATEGIES } from './constants';

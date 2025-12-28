@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Strategy } from '../types';
 import { BOILERPLATE_CODE } from '../constants';
-import { Save, Play, RefreshCw, Trash2 } from 'lucide-react';
+import { Save, RefreshCw, Trash2 } from 'lucide-react';
 
 interface StrategyEditorProps {
   strategy?: Strategy;
