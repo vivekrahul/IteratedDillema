@@ -17,6 +17,7 @@ export interface Strategy {
 
 export interface MatchContext {
   round: number;
+  totalRounds?: number; // Optional for backward compatibility, but engine will provide it
   myHistory: Move[];
   opponentHistory: Move[];
   payoffHistory: number[]; // My payoffs

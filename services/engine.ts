@@ -23,6 +23,7 @@ export const runMatch = (
     // Prepare Context
     const contextA = {
       round: r,
+      totalRounds: rounds,
       myHistory: [...movesA],
       opponentHistory: [...movesB],
       payoffHistory: [...payoffsA]
@@ -30,14 +31,13 @@ export const runMatch = (
 
     const contextB = {
       round: r,
+      totalRounds: rounds,
       myHistory: [...movesB],
       opponentHistory: [...movesA], // Note the swap
       payoffHistory: [...payoffsB]
     };
 
     // Execute Strategies
-    // Note: In a real async env, we'd run these in parallel.
-    // Here, synchronous execution is fine for MVP.
     const moveA = executeStrategy(strategyA.code, contextA);
     const moveB = executeStrategy(strategyB.code, contextB);
 
@@ -111,9 +111,9 @@ export const runTournament = (
     };
   });
 
-  // Round Robin Loop (includes self-play as per PRD)
+  // Round Robin Loop
   for (let i = 0; i < strategies.length; i++) {
-    for (let j = i; j < strategies.length; j++) { // j=i includes self-play
+    for (let j = i; j < strategies.length; j++) {
        const stratA = strategies[i];
        const stratB = strategies[j];
 
@@ -130,11 +130,6 @@ export const runTournament = (
          entries[stratB.id].matchesPlayed++;
          entries[stratB.id].totalScore += match.totalScoreB;
          if (match.totalScoreB > match.totalScoreA) entries[stratB.id].wins++;
-       } else {
-         // Self play: Ensure we don't double count if we treat it as one entity?
-         // Usually in self-play, you get the score you achieved against yourself.
-         // Our loop structure handles the match execution once.
-         // We've already added the score to stratA above.
        }
     }
   }
@@ -145,10 +140,9 @@ export const runTournament = (
     return {
       ...entry,
       avgScorePerRound: totalRounds > 0 ? entry.totalScore / totalRounds : 0,
-      // Recalculate global coop rate from matches
       cooperationRate: calculateGlobalCoopRate(entry.strategyId, matches)
     };
-  }).sort((a, b) => b.totalScore - a.totalScore); // Sort by score descending
+  }).sort((a, b) => b.totalScore - a.totalScore); 
 
   return {
     timestamp: Date.now(),
@@ -166,7 +160,6 @@ function calculateGlobalCoopRate(strategyId: string, matches: MatchResult[]): nu
        totalMoves += m.rounds.length;
        totalCoops += m.metrics.cooperationRateA * m.rounds.length;
     }
-    // Note: A match between A and A means this runs twice, which is correct for weighting
     if (m.strategyBId === strategyId) {
       totalMoves += m.rounds.length;
       totalCoops += m.metrics.cooperationRateB * m.rounds.length;
